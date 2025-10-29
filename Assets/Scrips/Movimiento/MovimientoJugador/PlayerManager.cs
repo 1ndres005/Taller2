@@ -1,11 +1,13 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.ShaderGraph;
+using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
     InputManager inputManager;
     PlayerMovement playerMovement;
+    public PlayerController controls;
 
     private void Awake()
     {
@@ -21,5 +23,15 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         playerMovement.HandleAllMovement();
+    }
+    // === Lectura de Inputs ===
+    public bool InteractPressed()
+    {
+        return controls.Gameplay.Interaction.WasPressedThisFrame();
+    }
+
+    public bool InventoryPressed()
+    {
+        return controls.Gameplay.Inventory.WasPressedThisFrame();
     }
 }
