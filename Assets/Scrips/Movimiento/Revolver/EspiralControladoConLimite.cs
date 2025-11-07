@@ -25,16 +25,22 @@ public class EspiralControladoConLimite : MonoBehaviour
         posicionInicial = transform.position;
 
         if (sliderProgreso != null)
+        {
             sliderProgreso.value = 0f;
             sliderProgreso.interactable = false;
+        }
     }
 
     void Update()
     {
         Vector3 mousePos = Input.mousePosition;
 
-        // Clic inicial: fijar centro del giro
-        if (Input.GetMouseButtonDown(0))
+        // 🔹 Condición: solo si se presionan AMBOS clics
+        bool ambosClicsPresionados = Input.GetMouseButton(0) && Input.GetMouseButton(1);
+
+        // 🔸 Inicio: cuando se presionan ambos clics al mismo tiempo
+        if (Input.GetMouseButtonDown(0) && Input.GetMouseButton(1) ||
+            Input.GetMouseButtonDown(1) && Input.GetMouseButton(0))
         {
             centroMouse = mousePos;
             ultimaPosMouse = mousePos;
@@ -42,14 +48,13 @@ public class EspiralControladoConLimite : MonoBehaviour
             girando = false;
         }
 
-        // Si se mantiene presionado el mouse
-        if (iniciado && Input.GetMouseButton(0))
+        // 🔸 Mantener presionados ambos clics
+        if (iniciado && ambosClicsPresionados)
         {
             Vector3 desdeCentroAntes = ultimaPosMouse - centroMouse;
             Vector3 desdeCentroAhora = mousePos - centroMouse;
 
             float anguloDelta = Vector3.SignedAngle(desdeCentroAntes, desdeCentroAhora, Vector3.forward);
-
             bool moviendo = desdeCentroAhora.magnitude > 1f && Mathf.Abs(anguloDelta) > 0.1f;
 
             if (moviendo)
@@ -57,19 +62,19 @@ public class EspiralControladoConLimite : MonoBehaviour
                 girando = true;
                 anguloActual += anguloDelta * sensibilidadGiro;
 
-                // Cargar el slider
+                // Cargar el slider mientras gira
                 if (sliderProgreso != null)
                     sliderProgreso.value += velocidadCarga * Time.deltaTime;
             }
             else
             {
                 girando = false;
-                // Descargar el slider si el mouse está quieto
+                // Descargar si no se mueve el mouse
                 if (sliderProgreso != null)
                     sliderProgreso.value -= velocidadDescarga * Time.deltaTime;
             }
 
-            // Movimiento circular
+            // Movimiento circular alrededor del punto inicial
             float x = Mathf.Cos(anguloActual * Mathf.Deg2Rad) * radio;
             float z = Mathf.Sin(anguloActual * Mathf.Deg2Rad) * radio;
 
@@ -80,15 +85,15 @@ public class EspiralControladoConLimite : MonoBehaviour
         }
         else
         {
-            // Si no se mantiene clic, la esfera regresa al centro
+            // 🔸 Si se suelta uno o ambos clics, vuelve al centro
             transform.position = Vector3.Lerp(transform.position, posicionInicial, Time.deltaTime * 2f);
 
-            // Descargar el slider
+            // Descargar el slider gradualmente
             if (sliderProgreso != null)
                 sliderProgreso.value -= velocidadDescarga * Time.deltaTime;
         }
 
-        // Mantener el slider entre 0 y 1
+        // 🔸 Limitar el slider entre 0 y 1
         if (sliderProgreso != null)
             sliderProgreso.value = Mathf.Clamp01(sliderProgreso.value);
     }
