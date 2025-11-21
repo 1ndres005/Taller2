@@ -2811,6 +2811,75 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761783832}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1764014966
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.9667645
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4.9667645
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4.9667645
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.089121
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 33.21
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+      propertyPath: m_Name
+      value: cocina de carpio
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
 --- !u!1 &1797745763
 GameObject:
   m_ObjectHideFlags: 0
@@ -4052,3 +4121,4 @@ SceneRoots:
   - {fileID: 32529121}
   - {fileID: 1060493597}
   - {fileID: 357424372}
+  - {fileID: 1764014966}
