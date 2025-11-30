@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerItemHandler : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class PlayerItemHandler : MonoBehaviour
 
         objetoEnMano = objeto;
 
-        // Desactivar f�sica
+        // Desactivar física mientras está en la mano
         Rigidbody rb = objeto.GetComponent<Rigidbody>();
         Collider col = objeto.GetComponent<Collider>();
 
@@ -28,21 +28,32 @@ public class PlayerItemHandler : MonoBehaviour
         objeto.transform.localRotation = Quaternion.identity;
     }
 
-    // Soltar/colocar un objeto en un punto
+    // Colocar un objeto en un punto del mundo (mesa, zona, etc.)
     public void ColocarObjeto(Transform punto)
     {
         if (objetoEnMano == null)
             return;
 
-        objetoEnMano.transform.SetParent(null);
-        objetoEnMano.transform.position = punto.position;
-        objetoEnMano.transform.rotation = punto.rotation;
+        GameObject obj = objetoEnMano;
 
-        Rigidbody rb = objetoEnMano.GetComponent<Rigidbody>();
-        Collider col = objetoEnMano.GetComponent<Collider>();
+        // Quitar de la mano
+        obj.transform.SetParent(null);
+        obj.transform.position = punto.position;
+        obj.transform.rotation = punto.rotation;  // o quita esta línea si te giraba raro
+
+        // Activar física de nuevo
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        Collider col = obj.GetComponent<Collider>();
 
         if (rb != null) rb.isKinematic = false;
         if (col != null) col.enabled = true;
+
+        // ❗ Desactivar que se pueda volver a recoger
+        PickupItem pickup = obj.GetComponent<PickupItem>();
+        if (pickup != null)
+        {
+            pickup.DesactivarPickup();
+        }
 
         objetoEnMano = null;
     }

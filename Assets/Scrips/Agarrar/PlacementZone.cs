@@ -4,6 +4,7 @@ public class PlacementZone : MonoBehaviour
 {
     public Transform puntoColocar; // Empty donde aparecerá el objeto
     public GameObject uiColocar;   // Texto "Pulsa P"
+
     bool jugadorCerca = false;
     PlayerItemHandler player;
 
@@ -22,6 +23,7 @@ public class PlacementZone : MonoBehaviour
             if (player.objetoEnMano != null)
             {
                 player.ColocarObjeto(puntoColocar);
+
                 if (uiColocar != null)
                     uiColocar.SetActive(false);
             }
