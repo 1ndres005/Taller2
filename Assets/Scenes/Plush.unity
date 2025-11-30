@@ -2876,7 +2876,9 @@ PrefabInstance:
       value: cocina de carpio
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -7271449666460269675, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
+    - {fileID: -5754060345647867467, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78eaeb570586e874cb0e6270ac1ba269, type: 3}
