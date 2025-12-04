@@ -12,17 +12,18 @@ public class ActivarObjetoPorE : MonoBehaviour
     [Header("Tecla de activación")]
     public KeyCode tecla = KeyCode.E;
 
+    bool jugadorDentro = false;
+
     void Start()
     {
-        // Por si el objeto inicia activo, lo apagamos
         if (objetoMostrar != null)
             objetoMostrar.SetActive(false);
     }
 
     void Update()
     {
-        // --- Activar con E ---
-        if (Input.GetKeyDown(tecla))
+        // --- Activar con E SOLO si está dentro del trigger ---
+        if (jugadorDentro && Input.GetKeyDown(tecla))
         {
             if (objetoMostrar != null)
                 objetoMostrar.SetActive(true);
@@ -35,6 +36,24 @@ public class ActivarObjetoPorE : MonoBehaviour
             {
                 objetoMostrar.SetActive(false);
             }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            jugadorDentro = true;
+            // Debug.Log("Jugador dentro del trigger.");
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            jugadorDentro = false;
+            // Debug.Log("Jugador fuera del trigger.");
         }
     }
 }

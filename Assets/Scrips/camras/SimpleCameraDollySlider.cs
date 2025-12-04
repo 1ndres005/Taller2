@@ -22,12 +22,15 @@ public class SimpleCameraDollySlider : MonoBehaviour
     public Slider sliderControl;
     public float valorSliderObjetivo = 1f;    // cuando llega a este valor, se dispara
 
+    [Header("Bloquear movimiento de cámara durante el dolly")]
+    public CameraFollowPlayerXZ cameraFollow; // <- script que mueve la cámara siguiendo al jugador
+
     bool jugadorCerca = false;
     bool enCinematica = false;
 
     bool camaraArriba = false;
 
-    // 🔥 NUEVO: para que el slider solo dispare una vez
+    // para que el slider solo dispare una vez
     bool sliderDisparado = false;
 
     Vector3 posicionInicial;
@@ -86,6 +89,10 @@ public class SimpleCameraDollySlider : MonoBehaviour
     {
         enCinematica = true;
 
+        // 🔒 Bloquear follow de cámara mientras entra al punto/dolly
+        if (cameraFollow != null)
+            cameraFollow.seguirHabilitado = false;
+
         posicionInicial = cameraTransform.position;
         rotacionInicial = cameraTransform.rotation;
 
@@ -96,7 +103,7 @@ public class SimpleCameraDollySlider : MonoBehaviour
 
         while (t < 1)
         {
-            t += Time.deltaTime / duracionIda;
+            t += Time.deltaTime / Mathf.Max(duracionIda, 0.0001f);
 
             cameraTransform.position = Vector3.Lerp(inicioPos, puntoDestino.position, t);
             cameraTransform.rotation = Quaternion.Slerp(inicioRot, puntoDestino.rotation, t);
@@ -125,7 +132,7 @@ public class SimpleCameraDollySlider : MonoBehaviour
 
         while (t < 1)
         {
-            t += Time.deltaTime / duracionVuelta;
+            t += Time.deltaTime / Mathf.Max(duracionVuelta, 0.0001f);
 
             cameraTransform.position = Vector3.Lerp(inicioPos, posicionInicial, t);
             cameraTransform.rotation = Quaternion.Slerp(inicioRot, rotacionInicial, t);
@@ -138,6 +145,10 @@ public class SimpleCameraDollySlider : MonoBehaviour
 
         camaraArriba = false;
         enCinematica = false;
+
+        // 🔓 Volver a permitir que la cámara siga al jugador
+        if (cameraFollow != null)
+            cameraFollow.seguirHabilitado = true;
 
         if (!cambioAutomatico && jugadorCerca && uiInteract != null)
             uiInteract.SetActive(true);
