@@ -4611,6 +4611,7 @@ GameObject:
   - component: {fileID: 882407153}
   - component: {fileID: 882407156}
   - component: {fileID: 882407155}
+  - component: {fileID: 882407157}
   m_Layer: 0
   m_Name: Cube.003
   m_TagString: Untagged
@@ -4627,7 +4628,7 @@ Transform:
   m_GameObject: {fileID: 882407151}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0.493, y: 0.527, z: -0.672}
+  m_LocalPosition: {x: -0.65, y: 0.527, z: -0.672}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4724,6 +4725,29 @@ MonoBehaviour:
   sePuedeMoverDespues: 0
   tipoObjeto: olla
   rotacionOriginal: {x: 0, y: 0, z: 0, w: 0}
+--- !u!136 &882407157
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882407151}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0013111971
+  m_Height: 0.0024251938
+  m_Direction: 1
+  m_Center: {x: -0.000011923314, y: -0.00000035093393, z: 0.000120047574}
 --- !u!1 &895676863
 GameObject:
   m_ObjectHideFlags: 0
@@ -10007,6 +10031,7 @@ GameObject:
   - component: {fileID: 2040186106}
   - component: {fileID: 2040186105}
   - component: {fileID: 2040186104}
+  - component: {fileID: 2040186107}
   m_Layer: 0
   m_Name: Particle System
   m_TagString: Untagged
@@ -10174,7 +10199,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.4
+      scalar: 0.97
       minScalar: 0.2
       maxCurve:
         serializedVersion: 2
@@ -10227,7 +10252,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.6
+      scalar: 0.5725666
       minScalar: 0.3
       maxCurve:
         serializedVersion: 2
@@ -10723,7 +10748,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 11.01
+    angle: 34.980198
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -11366,24 +11391,24 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.25364897, g: 0.44551602, b: 0.9433962, a: 1}
-        key1: {r: 0.754717, g: 0.54536784, b: 0.21003917, a: 1}
+        key0: {r: 1, g: 0.61594206, b: 0, a: 1}
+        key1: {r: 0.25364897, g: 0.44551602, b: 0.9433962, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
-        ctime0: 11758
-        ctime1: 37586
+        ctime0: 19082
+        ctime1: 36815
         ctime2: 0
         ctime3: 0
         ctime4: 0
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 26792
-        atime1: 48380
+        atime0: 38550
+        atime1: 65535
         atime2: 0
         atime3: 0
         atime4: 0
@@ -14823,12 +14848,39 @@ Transform:
   m_GameObject: {fileID: 2040186103}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -48.87, y: 2.027, z: 21.869}
+  m_LocalPosition: {x: -49.72, y: 2.027, z: 21.869}
   m_LocalScale: {x: 3.3461916, y: 3.3461916, z: 3.3461916}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!54 &2040186107
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040186103}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2041373092
 GameObject:
   m_ObjectHideFlags: 0
