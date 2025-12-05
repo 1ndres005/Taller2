@@ -1730,7 +1730,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 24.068275
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -1772,7 +1772,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: -0.00034294376, y: -0.9324482, z: 0.36108354, w: 0.01261076}
-  m_LocalPosition: {x: -49.04834, y: 16.79, z: 47.572025}
+  m_LocalPosition: {x: -53.23, y: 16.83, z: 47.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1837,7 +1837,7 @@ MonoBehaviour:
   jugador: {fileID: 781142547}
   suavizado: 3
   usarOffsetInicial: 1
-  offsetManual: {x: 0, y: 0, z: 0}
+  offsetManual: {x: -1, y: 0, z: 0}
   seguirHabilitado: 1
 --- !u!1 &333216092
 GameObject:
@@ -4251,7 +4251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d461dede39bb43f4285adad697e1fc59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 17.94
+  walkSpeed: 7
   runSpeed: 10
   rotationSpeed: 15
 --- !u!114 &781142549
