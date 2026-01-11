@@ -4,9 +4,18 @@ using UnityEngine;
 public class MovimientoJugador : MonoBehaviour
 {
     [Header("Velocidades")]
-    public float walkSpeed = 5f;        // Velocidad al caminar
-    public float runSpeed = 10f;        // Velocidad al correr
-    public float rotationSpeed = 15f;   // Qu� tan r�pido gira el personaje
+    public float walkSpeed = 5f;
+    public float runSpeed = 10f;
+
+    [Header("Suavidad")]
+    public float acceleration = 20f;
+    public float rotationSpeed = 15f;
+
+    [Header("Salto")]
+    public float jumpForce = 6f;
+    public float groundCheckDistance = 0.25f;
+    public LayerMask groundLayers;
+    public float coyoteTime = 0.10f; // opcional: permite saltar un poquito después de salir del suelo
 
     Rigidbody rb;
     Transform cam;
@@ -14,65 +23,108 @@ public class MovimientoJugador : MonoBehaviour
     Vector2 input;
     bool isRunning;
 
+    bool jumpPressed;
+    float lastGroundedTime;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
 
-        // Evitar que el personaje se vuelque
-        rb.freezeRotation = true;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     void Update()
     {
-        // Input WSAD
-        input.x = Input.GetAxisRaw("Horizontal");
-        input.y = Input.GetAxisRaw("Vertical");
+        // Input suave
+        input.x = Input.GetAxis("Horizontal");
+        input.y = Input.GetAxis("Vertical");
 
-        // Shift para correr
         isRunning = Input.GetKey(KeyCode.LeftShift);
+
+        // Capturar salto en Update (para no perder el click)
+        if (Input.GetKeyDown(KeyCode.Space))
+            jumpPressed = true;
+
+        // Ground check (en Update está bien, es barato)
+        if (IsGrounded())
+            lastGroundedTime = Time.time;
     }
 
     void FixedUpdate()
     {
         HandleMovement();
         HandleRotation();
+        HandleJump();
     }
 
     void HandleMovement()
     {
-        Vector3 moveDirection = cam.forward * input.y + cam.right * input.x;
-        moveDirection.y = 0f;
-        moveDirection.Normalize();
+        Vector3 forward = cam.forward; forward.y = 0f; forward.Normalize();
+        Vector3 right = cam.right; right.y = 0f; right.Normalize();
 
-        float currentSpeed = isRunning ? runSpeed : walkSpeed;
+        Vector3 moveDirection = forward * input.y + right * input.x;
+        if (moveDirection.sqrMagnitude > 1f) moveDirection.Normalize();
 
-        Vector3 targetVelocity = moveDirection * currentSpeed;
+        float speed = isRunning ? runSpeed : walkSpeed;
+        Vector3 desiredVelocity = moveDirection * speed;
 
-        rb.linearVelocity = new Vector3(
-            targetVelocity.x,
-            rb.linearVelocity.y,
-            targetVelocity.z
-        );
+        Vector3 currentVel = rb.linearVelocity;
+        Vector3 targetVel = new Vector3(desiredVelocity.x, currentVel.y, desiredVelocity.z);
+
+        rb.linearVelocity = Vector3.MoveTowards(currentVel, targetVel, acceleration * Time.fixedDeltaTime);
     }
 
     void HandleRotation()
     {
-        if (input.sqrMagnitude == 0f)
-            return;
+        if (input.sqrMagnitude < 0.001f) return;
 
-        Vector3 lookDirection = cam.forward * input.y + cam.right * input.x;
-        lookDirection.y = 0f;
-        lookDirection.Normalize();
+        Vector3 forward = cam.forward; forward.y = 0f; forward.Normalize();
+        Vector3 right = cam.right; right.y = 0f; right.Normalize();
 
-        if (lookDirection == Vector3.zero)
-            return;
+        Vector3 lookDir = forward * input.y + right * input.x;
+        if (lookDir.sqrMagnitude < 0.001f) return;
+        lookDir.Normalize();
 
-        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            targetRotation,
-            rotationSpeed * Time.deltaTime
-        );
+        Quaternion targetRot = Quaternion.LookRotation(lookDir, Vector3.up);
+        Quaternion newRot = Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
+
+        rb.MoveRotation(newRot);
     }
+
+    void HandleJump()
+    {
+        if (!jumpPressed) return;
+
+        bool groundedOrCoyote = IsGrounded() || (Time.time - lastGroundedTime) <= coyoteTime;
+
+        if (groundedOrCoyote)
+        {
+            // Reset Y para que el salto sea consistente
+            Vector3 v = rb.linearVelocity;
+            v.y = 0f;
+            rb.linearVelocity = v;
+
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+
+        jumpPressed = false;
+    }
+
+    bool IsGrounded()
+    {
+        // Raycast desde un poco arriba del centro del personaje hacia abajo
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        return Physics.Raycast(origin, Vector3.down, groundCheckDistance, groundLayers, QueryTriggerInteraction.Ignore);
+    }
+
+#if UNITY_EDITOR
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        Gizmos.DrawLine(origin, origin + Vector3.down * groundCheckDistance);
+    }
+#endif
 }
