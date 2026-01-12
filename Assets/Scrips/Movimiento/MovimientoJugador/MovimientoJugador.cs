@@ -58,7 +58,7 @@ public class MovimientoJugador : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
             jumpPressed = true;
 
-        if (Input.GetKeyDown(KeyCode.E) && SePuedeMover)
+        if (Input.GetKeyDown(KeyCode.M) && SePuedeMover)
             EjecutarAccion();
 
         isGrounded = CheckGrounded();
