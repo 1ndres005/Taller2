@@ -7506,6 +7506,7 @@ GameObject:
   - component: {fileID: 1265325678}
   - component: {fileID: 1265325677}
   - component: {fileID: 1265325676}
+  - component: {fileID: 1265325681}
   m_Layer: 0
   m_Name: dolly 3
   m_TagString: Untagged
@@ -7639,6 +7640,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1265325674}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1265325681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1265325674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ffb5531e8f66c7479d08c4b61fbcf47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateKey: 101
 --- !u!1 &1282209010
 GameObject:
   m_ObjectHideFlags: 0
@@ -7686,6 +7700,7 @@ GameObject:
   - component: {fileID: 1313133422}
   - component: {fileID: 1313133427}
   - component: {fileID: 1313133428}
+  - component: {fileID: 1313133429}
   m_Layer: 0
   m_Name: dolly
   m_TagString: Untagged
@@ -7836,6 +7851,19 @@ MonoBehaviour:
   sliderRoot: {fileID: 1964217586}
   fuegoParticles: {fileID: 2040186105}
   toggleKey: 113
+--- !u!114 &1313133429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313133421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ffb5531e8f66c7479d08c4b61fbcf47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateKey: 101
 --- !u!1 &1336969298
 GameObject:
   m_ObjectHideFlags: 0
