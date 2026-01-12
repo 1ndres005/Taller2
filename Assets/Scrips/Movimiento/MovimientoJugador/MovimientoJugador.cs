@@ -8,7 +8,7 @@ public class MovimientoJugador : MonoBehaviour
     public float runSpeed = 10f;
 
     [Header("Suavidad")]
-    public float acceleration = 20f;
+    public float acceleration = 12f;
     public float rotationSpeed = 15f;
 
     [Header("Salto")]
@@ -59,9 +59,7 @@ public class MovimientoJugador : MonoBehaviour
             jumpPressed = true;
 
         if (Input.GetKeyDown(KeyCode.E) && SePuedeMover)
-        {
             EjecutarAccion();
-        }
 
         isGrounded = CheckGrounded();
 
@@ -85,8 +83,15 @@ public class MovimientoJugador : MonoBehaviour
     void EjecutarAccion()
     {
         SePuedeMover = false;
+
+        // 🧹 Elimina completamente el impulso residual
+        Vector3 stop = rb.linearVelocity;
+        stop.x = 0;
+        stop.z = 0;
+        rb.linearVelocity = stop;
+
         anim.SetTrigger("Action");
-        Invoke(nameof(FinAccion), 0.8f); // duración de tu animación
+        Invoke(nameof(FinAccion), 0.8f);
     }
 
     void FinAccion()
@@ -99,16 +104,16 @@ public class MovimientoJugador : MonoBehaviour
         Vector3 forward = cam.forward; forward.y = 0f; forward.Normalize();
         Vector3 right = cam.right; right.y = 0f; right.Normalize();
 
-        Vector3 moveDirection = forward * input.y + right * input.x;
-        if (moveDirection.sqrMagnitude > 1f) moveDirection.Normalize();
+        Vector3 moveDir = forward * input.y + right * input.x;
+        if (moveDir.magnitude > 1f) moveDir.Normalize();
 
         float speed = isRunning ? runSpeed : walkSpeed;
-        Vector3 desiredVelocity = moveDirection * speed;
+        Vector3 targetVelocity = moveDir * speed;
 
-        Vector3 currentVel = rb.linearVelocity;
-        Vector3 targetVel = new Vector3(desiredVelocity.x, currentVel.y, desiredVelocity.z);
+        Vector3 current = rb.linearVelocity;
+        Vector3 desired = new Vector3(targetVelocity.x, current.y, targetVelocity.z);
 
-        rb.linearVelocity = Vector3.MoveTowards(currentVel, targetVel, acceleration * Time.fixedDeltaTime);
+        rb.linearVelocity = Vector3.MoveTowards(current, desired, acceleration * Time.fixedDeltaTime);
     }
 
     void HandleRotation()
@@ -116,13 +121,10 @@ public class MovimientoJugador : MonoBehaviour
         Vector3 planarVelocity = rb.linearVelocity;
         planarVelocity.y = 0f;
 
-        if (planarVelocity.sqrMagnitude < 0.01f)
-            return;
+        if (planarVelocity.magnitude < 0.2f) return;
 
-        Quaternion targetRot = Quaternion.LookRotation(planarVelocity.normalized, Vector3.up);
-        Quaternion newRot = Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
-
-        rb.MoveRotation(newRot);
+        Quaternion targetRot = Quaternion.LookRotation(planarVelocity.normalized);
+        rb.rotation = Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
     }
 
     void HandleJump()
@@ -134,7 +136,7 @@ public class MovimientoJugador : MonoBehaviour
         if (canJump)
         {
             Vector3 v = rb.linearVelocity;
-            v.y = 0f;
+            v.y = 0;
             rb.linearVelocity = v;
 
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -146,6 +148,6 @@ public class MovimientoJugador : MonoBehaviour
     bool CheckGrounded()
     {
         Vector3 origin = transform.position + Vector3.up * 0.1f;
-        return Physics.Raycast(origin, Vector3.down, groundCheckDistance, groundLayers, QueryTriggerInteraction.Ignore);
+        return Physics.Raycast(origin, Vector3.down, groundCheckDistance, groundLayers);
     }
 }
