@@ -1,33 +1,53 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SliderActivateObject : MonoBehaviour
 {
     [Header("UI")]
-    public Slider slider;          // El slider
+    public Slider slider;   // Slider (0 → 1)
 
-    [Header("Object to show")]
-    public GameObject targetObject; // Objeto que aparecer�
+    [Header("Objects to HIDE")]
+    public GameObject[] objectsToHide;   // Objetos que desaparecen
+
+    [Header("Objects to SHOW")]
+    public GameObject[] objectsToShow;   // Objetos que aparecen
 
     [Header("Options")]
     public bool disableSlider = true;
 
-    bool activated = false;
+    private bool activated = false;
 
     void Update()
     {
         if (activated) return;
+        if (slider == null) return;
 
-        // Si el slider lleg� a 1 (100%)
-        if (slider != null && slider.value >= 1f)
+        // Cuando el slider llega a 1 (100%)
+        if (slider.value >= 1f)
         {
             activated = true;
 
-            // Mostrar objeto
-            if (targetObject != null)
-                targetObject.SetActive(true);
+            // ❌ Ocultar objetos
+            if (objectsToHide != null)
+            {
+                foreach (GameObject obj in objectsToHide)
+                {
+                    if (obj != null)
+                        obj.SetActive(false);
+                }
+            }
 
-            // Desactivar slider
+            // ✅ Mostrar objetos
+            if (objectsToShow != null)
+            {
+                foreach (GameObject obj in objectsToShow)
+                {
+                    if (obj != null)
+                        obj.SetActive(true);
+                }
+            }
+
+            // Opcional: ocultar el slider
             if (disableSlider)
                 slider.gameObject.SetActive(false);
         }
