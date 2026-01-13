@@ -20,12 +20,17 @@ public class MovimientoJugador : MonoBehaviour
     [Header("Control")]
     public bool SePuedeMover = true;
 
+    [Header("Joystick (UI)")]
+    public SimpleJoystickMouseOnly joystick; // ⬅️ Arrastra aquí tu JoyBG (donde está el script)
+
+    [Header("Correr")]
+    public bool isRunning = false; // luego lo puedes controlar con un botón UI
+
     Rigidbody rb;
     Transform cam;
     Animator anim;
 
     Vector2 input;
-    bool isRunning;
     bool jumpPressed;
 
     bool isGrounded;
@@ -34,69 +39,49 @@ public class MovimientoJugador : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        cam = Camera.main.transform;
+        cam = Camera.main != null ? Camera.main.transform : null;
         anim = GetComponentInChildren<Animator>();
 
         rb.interpolation = RigidbodyInterpolation.Interpolate;
+
+        // Para que no se voltee por físicas (y dejamos que gire por Y con el movimiento)
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     void Update()
     {
-        if (SePuedeMover)
-        {
-            input.x = Input.GetAxis("Horizontal");
-            input.y = Input.GetAxis("Vertical");
-        }
+        // Input desde joystick
+        if (SePuedeMover && joystick != null)
+            input = joystick.InputVector;
         else
-        {
             input = Vector2.zero;
-        }
 
-        isRunning = Input.GetKey(KeyCode.LeftShift);
-
+        // Salto (en PC: Space). En móvil puedes llamar JumpButton() desde un botón UI
         if (Input.GetKeyDown(KeyCode.Space))
             jumpPressed = true;
 
-        if (Input.GetKeyDown(KeyCode.M) && SePuedeMover)
-            EjecutarAccion();
-
+        // Ground check
         isGrounded = CheckGrounded();
-
         if (isGrounded)
             lastGroundedTime = Time.time;
 
-        float targetSpeed = input.magnitude * (isRunning ? 1f : 0.5f);
-        anim.SetFloat("Speed", targetSpeed, 0.1f, Time.deltaTime);
-        anim.SetBool("IsGrounded", isGrounded);
+        // Animaciones
+        if (anim != null)
+        {
+            float targetSpeed = input.magnitude * (isRunning ? 1f : 0.5f);
+            anim.SetFloat("Speed", targetSpeed, 0.1f, Time.deltaTime);
+            anim.SetBool("IsGrounded", isGrounded);
+        }
     }
 
     void FixedUpdate()
     {
         if (!SePuedeMover) return;
+        if (cam == null) return;
 
         HandleMovement();
         HandleRotation();
         HandleJump();
-    }
-
-    void EjecutarAccion()
-    {
-        SePuedeMover = false;
-
-        // 🧹 Elimina completamente el impulso residual
-        Vector3 stop = rb.linearVelocity;
-        stop.x = 0;
-        stop.z = 0;
-        rb.linearVelocity = stop;
-
-        anim.SetTrigger("Action");
-        Invoke(nameof(FinAccion), 0.8f);
-    }
-
-    void FinAccion()
-    {
-        SePuedeMover = true;
     }
 
     void HandleMovement()
@@ -149,5 +134,17 @@ public class MovimientoJugador : MonoBehaviour
     {
         Vector3 origin = transform.position + Vector3.up * 0.1f;
         return Physics.Raycast(origin, Vector3.down, groundCheckDistance, groundLayers);
+    }
+
+    // ✅ Botón UI para salto (móvil)
+    public void JumpButton()
+    {
+        jumpPressed = true;
+    }
+
+    // ✅ Botón UI para correr (móvil)
+    public void SetRunning(bool value)
+    {
+        isRunning = value;
     }
 }
