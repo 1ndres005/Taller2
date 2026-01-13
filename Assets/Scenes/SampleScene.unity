@@ -7674,6 +7674,7 @@ GameObject:
   - component: {fileID: 1234776103}
   - component: {fileID: 1234776102}
   - component: {fileID: 1234776106}
+  - component: {fileID: 1234776107}
   m_Layer: 0
   m_Name: natilla
   m_TagString: Untagged
@@ -7757,7 +7758,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e20e8af8330da5e4bbca5e99bd68ae8e, type: 2}
+  - {fileID: 2100000, guid: 661ccc3e1e625cc46b55cdb9c07ee185, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7803,6 +7804,21 @@ MonoBehaviour:
   action: 0
   key: 114
   uiPanel: {fileID: 0}
+--- !u!114 &1234776107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234776099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 249283a065806684cb89976ae8326d5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRenderer: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: e20e8af8330da5e4bbca5e99bd68ae8e, type: 2}
+  disableColliderAfterPickup: 1
 --- !u!1 &1265325674
 GameObject:
   m_ObjectHideFlags: 0
@@ -9704,6 +9720,7 @@ GameObject:
   - component: {fileID: 1605840571}
   - component: {fileID: 1605840575}
   - component: {fileID: 1605840576}
+  - component: {fileID: 1605840577}
   m_Layer: 0
   m_Name: natilla echa
   m_TagString: Untagged
@@ -9848,6 +9865,22 @@ MonoBehaviour:
   targetRenderer: {fileID: 0}
   normalMaterial: {fileID: 2100000, guid: e20e8af8330da5e4bbca5e99bd68ae8e, type: 2}
   disableColliderAfterPickup: 1
+--- !u!114 &1605840577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605840568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72ef7431439a2d84dbe60231f6cea1f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 1416512412}
+  action: 0
+  key: 114
+  uiPanel: {fileID: 0}
 --- !u!1 &1613285286
 GameObject:
   m_ObjectHideFlags: 0
