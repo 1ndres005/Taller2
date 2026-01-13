@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class MovimientoJugador : MonoBehaviour
@@ -8,7 +8,7 @@ public class MovimientoJugador : MonoBehaviour
     public float runSpeed = 10f;
 
     [Header("Suavidad")]
-    public float acceleration = 20f;
+    public float acceleration = 12f;
     public float rotationSpeed = 15f;
 
     [Header("Salto")]
@@ -17,116 +17,126 @@ public class MovimientoJugador : MonoBehaviour
     public LayerMask groundLayers;
     public float coyoteTime = 0.10f;
 
+    [Header("Control")]
+    public bool SePuedeMover = true;
+
     Rigidbody rb;
     Transform cam;
+    Animator anim;
 
     Vector2 input;
     bool isRunning;
-
     bool jumpPressed;
+
+    bool isGrounded;
     float lastGroundedTime;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
+        anim = GetComponentInChildren<Animator>();
 
         rb.interpolation = RigidbodyInterpolation.Interpolate;
-
-        // ✅ FIX IMPORTANTE:
-        // NO sobrescribe las constraints del Inspector
-        rb.constraints |= RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     void Update()
     {
-        // Input suave
-        input.x = Input.GetAxis("Horizontal");
-        input.y = Input.GetAxis("Vertical");
+        if (SePuedeMover)
+        {
+            input.x = Input.GetAxis("Horizontal");
+            input.y = Input.GetAxis("Vertical");
+        }
+        else
+        {
+            input = Vector2.zero;
+        }
 
         isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        // Salto con espacio
         if (Input.GetKeyDown(KeyCode.Space))
             jumpPressed = true;
 
-        // Guardar último momento en suelo (coyote time)
-        if (IsGrounded())
+        if (Input.GetKeyDown(KeyCode.M) && SePuedeMover)
+            EjecutarAccion();
+
+        isGrounded = CheckGrounded();
+
+        if (isGrounded)
             lastGroundedTime = Time.time;
+
+        float targetSpeed = input.magnitude * (isRunning ? 1f : 0.5f);
+        anim.SetFloat("Speed", targetSpeed, 0.1f, Time.deltaTime);
+        anim.SetBool("IsGrounded", isGrounded);
     }
 
     void FixedUpdate()
     {
+        if (!SePuedeMover) return;
+
         HandleMovement();
         HandleRotation();
         HandleJump();
     }
 
+    void EjecutarAccion()
+    {
+        SePuedeMover = false;
+
+        // 🧹 Elimina completamente el impulso residual
+        Vector3 stop = rb.linearVelocity;
+        stop.x = 0;
+        stop.z = 0;
+        rb.linearVelocity = stop;
+
+        anim.SetTrigger("Action");
+        Invoke(nameof(FinAccion), 0.8f);
+    }
+
+    void FinAccion()
+    {
+        SePuedeMover = true;
+    }
+
     void HandleMovement()
     {
-        Vector3 forward = cam.forward;
-        forward.y = 0f;
-        forward.Normalize();
+        Vector3 forward = cam.forward; forward.y = 0f; forward.Normalize();
+        Vector3 right = cam.right; right.y = 0f; right.Normalize();
 
-        Vector3 right = cam.right;
-        right.y = 0f;
-        right.Normalize();
-
-        Vector3 moveDirection = forward * input.y + right * input.x;
-        if (moveDirection.sqrMagnitude > 1f)
-            moveDirection.Normalize();
+        Vector3 moveDir = forward * input.y + right * input.x;
+        if (moveDir.magnitude > 1f) moveDir.Normalize();
 
         float speed = isRunning ? runSpeed : walkSpeed;
-        Vector3 desiredVelocity = moveDirection * speed;
+        Vector3 targetVelocity = moveDir * speed;
 
-        Vector3 currentVel = rb.linearVelocity;
-        Vector3 targetVel = new Vector3(desiredVelocity.x, currentVel.y, desiredVelocity.z);
+        Vector3 current = rb.linearVelocity;
+        Vector3 desired = new Vector3(targetVelocity.x, current.y, targetVelocity.z);
 
-        rb.linearVelocity = Vector3.MoveTowards(
-            currentVel,
-            targetVel,
-            acceleration * Time.fixedDeltaTime
-        );
+        rb.linearVelocity = Vector3.MoveTowards(current, desired, acceleration * Time.fixedDeltaTime);
     }
 
     void HandleRotation()
     {
-        if (input.sqrMagnitude < 0.001f) return;
+        Vector3 planarVelocity = rb.linearVelocity;
+        planarVelocity.y = 0f;
 
-        Vector3 forward = cam.forward;
-        forward.y = 0f;
-        forward.Normalize();
+        if (planarVelocity.magnitude < 0.2f) return;
 
-        Vector3 right = cam.right;
-        right.y = 0f;
-        right.Normalize();
-
-        Vector3 lookDir = forward * input.y + right * input.x;
-        if (lookDir.sqrMagnitude < 0.001f) return;
-
-        lookDir.Normalize();
-
-        Quaternion targetRot = Quaternion.LookRotation(lookDir, Vector3.up);
-        Quaternion newRot = Quaternion.Slerp(
-            rb.rotation,
-            targetRot,
-            rotationSpeed * Time.fixedDeltaTime
-        );
-
-        rb.MoveRotation(newRot);
+        Quaternion targetRot = Quaternion.LookRotation(planarVelocity.normalized);
+        rb.rotation = Quaternion.Slerp(rb.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
     }
 
     void HandleJump()
     {
-        if (!jumpPressed) return;
+        if (!jumpPressed || !SePuedeMover) return;
 
-        bool groundedOrCoyote =
-            IsGrounded() || (Time.time - lastGroundedTime) <= coyoteTime;
+        bool canJump = isGrounded || (Time.time - lastGroundedTime) <= coyoteTime;
 
-        if (groundedOrCoyote)
+        if (canJump)
         {
             Vector3 v = rb.linearVelocity;
-            v.y = 0f;
+            v.y = 0;
             rb.linearVelocity = v;
 
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -135,24 +145,9 @@ public class MovimientoJugador : MonoBehaviour
         jumpPressed = false;
     }
 
-    bool IsGrounded()
+    bool CheckGrounded()
     {
         Vector3 origin = transform.position + Vector3.up * 0.1f;
-        return Physics.Raycast(
-            origin,
-            Vector3.down,
-            groundCheckDistance,
-            groundLayers,
-            QueryTriggerInteraction.Ignore
-        );
+        return Physics.Raycast(origin, Vector3.down, groundCheckDistance, groundLayers);
     }
-
-#if UNITY_EDITOR
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Vector3 origin = transform.position + Vector3.up * 0.1f;
-        Gizmos.DrawLine(origin, origin + Vector3.down * groundCheckDistance);
-    }
-#endif
 }
