@@ -1,26 +1,53 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class DualTipAimbot : MonoBehaviour
 {
+    // =========================
+    // ENUM PARA FREEZE ROTATION
+    // =========================
+    public enum FreezeRotationAxis
+    {
+        None,
+        X,
+        Y,
+        Z,
+        XY,
+        XZ,
+        YZ,
+        XYZ
+    }
+
     [Header("Referencias de puntas")]
-    public Transform leftTip;   // la punta/objeto visible de la mano izquierda
-    public Transform rightTip;  // la punta/objeto visible de la mano derecha
+    public Transform leftTip;
+    public Transform rightTip;
 
     [Header("Target")]
-    public Transform target;    // la bolita del medio
+    public Transform target;
 
     [Header("Controles")]
-    public bool leftUsesLeftClick = true;   // leftTip con click izquierdo (mouse 0)
-    public bool leftUsesRightClick = false; // si quieres cambiar controles (no necesario)
-    public bool rightUsesRightClick = true; // rightTip con click derecho (mouse 1)
+    public bool leftUsesLeftClick = true;
+    public bool leftUsesRightClick = false;
+    public bool rightUsesRightClick = true;
     public bool rightUsesLeftClick = false;
 
     [Header("Movimiento")]
-    public float moveSpeed = 12f;             // rapidez del lerp
-    public float stopDistanceFromTarget = 0.05f; // distancia desde el target donde quedará la punta
-    public bool rotateToLookAtTarget = true;  // si la punta rota mirando al target
+    public float moveSpeed = 12f;
+    public float stopDistanceFromTarget = 0.05f;
 
-    // almacenan las posiciones/rotaciones locales originales para regresar al soltar
+    [Header("Distance Offset")]
+    [Range(0f, 1f)]
+    public float distanceOffset = 1f; // 0 = no se acerca | 1 = comportamiento original
+
+    public bool rotateToLookAtTarget = true;
+
+    [Header("Freeze Rotation")]
+    public FreezeRotationAxis freezeRotation = FreezeRotationAxis.None;
+
+    [Header("Rotation Offset")]
+    [Range(0f, 1f)]
+    public float rotationOffset = 1f; // 0 = no rota | 1 = comportamiento original
+
+    // originales
     private Vector3 leftOriginalLocalPos;
     private Quaternion leftOriginalLocalRot;
     private Vector3 rightOriginalLocalPos;
@@ -33,44 +60,32 @@ public class DualTipAimbot : MonoBehaviour
             leftOriginalLocalPos = leftTip.localPosition;
             leftOriginalLocalRot = leftTip.localRotation;
         }
-        else
-            Debug.LogWarning("[DualTipAimbot] leftTip no asignado.");
 
         if (rightTip != null)
         {
             rightOriginalLocalPos = rightTip.localPosition;
             rightOriginalLocalRot = rightTip.localRotation;
         }
-        else
-            Debug.LogWarning("[DualTipAimbot] rightTip no asignado.");
-
-        if (target == null)
-            Debug.LogWarning("[DualTipAimbot] target no asignado.");
     }
 
     void Update()
     {
-        // determinar inputs
         bool leftPressed = false;
         bool rightPressed = false;
 
-        // por defecto: leftTip con mouse0, rightTip con mouse1. Las flags permiten otra configuración si quieres.
         if (leftUsesLeftClick && Input.GetMouseButton(0)) leftPressed = true;
         if (leftUsesRightClick && Input.GetMouseButton(1)) leftPressed = true;
 
         if (rightUsesRightClick && Input.GetMouseButton(1)) rightPressed = true;
         if (rightUsesLeftClick && Input.GetMouseButton(0)) rightPressed = true;
 
-        // Si target nulo, no hacer aimbot
         if (target == null)
         {
-            // regresar ambos si existan
             if (leftTip != null) ReturnTipToOriginal(leftTip, leftOriginalLocalPos, leftOriginalLocalRot);
             if (rightTip != null) ReturnTipToOriginal(rightTip, rightOriginalLocalPos, rightOriginalLocalRot);
             return;
         }
 
-        // Left tip
         if (leftTip != null)
         {
             if (leftPressed)
@@ -79,7 +94,6 @@ public class DualTipAimbot : MonoBehaviour
                 ReturnTipToOriginal(leftTip, leftOriginalLocalPos, leftOriginalLocalRot);
         }
 
-        // Right tip
         if (rightTip != null)
         {
             if (rightPressed)
@@ -91,20 +105,24 @@ public class DualTipAimbot : MonoBehaviour
 
     void MoveTipTowardsTarget(Transform tip)
     {
-        // Calculamos dirección desde target hacia la punta actual (para evitar superposición).
         Vector3 dir = (tip.position - target.position).normalized;
-        if (dir == Vector3.zero) dir = tip.forward; // fallback
+        if (dir == Vector3.zero) dir = tip.forward;
 
-        Vector3 desiredWorldPos = target.position + dir * stopDistanceFromTarget;
+        // ðŸ”¹ DISTANCE OFFSET 0â€“1 (NO rompe comportamiento)
+        float effectiveDistance = stopDistanceFromTarget * distanceOffset;
+        Vector3 desiredWorldPos = target.position + dir * effectiveDistance;
 
-        // Movimiento suave usando un exponencial (se siente más natural que Lerp directo)
         float t = 1f - Mathf.Exp(-moveSpeed * Time.deltaTime);
         tip.position = Vector3.Lerp(tip.position, desiredWorldPos, t);
 
         if (rotateToLookAtTarget)
         {
             Quaternion desiredRot = Quaternion.LookRotation(target.position - tip.position, Vector3.up);
-            tip.rotation = Quaternion.Slerp(tip.rotation, desiredRot, t);
+
+            Quaternion offsetRot = Quaternion.Slerp(tip.rotation, desiredRot, rotationOffset);
+            offsetRot = ApplyRotationFreeze(tip.rotation, offsetRot);
+
+            tip.rotation = Quaternion.Slerp(tip.rotation, offsetRot, t);
         }
     }
 
@@ -125,5 +143,44 @@ public class DualTipAimbot : MonoBehaviour
             tip.localPosition = Vector3.Lerp(tip.localPosition, originalLocalPos, t);
             tip.localRotation = Quaternion.Slerp(tip.localRotation, originalLocalRot, t);
         }
+    }
+
+    // =========================
+    // FUNCIÃ“N DE FREEZE ROTATION
+    // =========================
+    Quaternion ApplyRotationFreeze(Quaternion current, Quaternion desired)
+    {
+        Vector3 currentEuler = current.eulerAngles;
+        Vector3 desiredEuler = desired.eulerAngles;
+
+        switch (freezeRotation)
+        {
+            case FreezeRotationAxis.X:
+                desiredEuler.x = currentEuler.x;
+                break;
+            case FreezeRotationAxis.Y:
+                desiredEuler.y = currentEuler.y;
+                break;
+            case FreezeRotationAxis.Z:
+                desiredEuler.z = currentEuler.z;
+                break;
+            case FreezeRotationAxis.XY:
+                desiredEuler.x = currentEuler.x;
+                desiredEuler.y = currentEuler.y;
+                break;
+            case FreezeRotationAxis.XZ:
+                desiredEuler.x = currentEuler.x;
+                desiredEuler.z = currentEuler.z;
+                break;
+            case FreezeRotationAxis.YZ:
+                desiredEuler.y = currentEuler.y;
+                desiredEuler.z = currentEuler.z;
+                break;
+            case FreezeRotationAxis.XYZ:
+                desiredEuler = currentEuler;
+                break;
+        }
+
+        return Quaternion.Euler(desiredEuler);
     }
 }
