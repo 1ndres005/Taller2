@@ -10,8 +10,14 @@ public class PickupRestoreMaterial : MonoBehaviour
     [Tooltip("Material normal al que debe volver el objeto.")]
     public Material normalMaterial;
 
+    [Header("Interacción")]
+    public KeyCode interactKey = KeyCode.E; // ⬅️ tecla que tú quieras
+
     [Header("Opciones")]
     public bool disableColliderAfterPickup = true;
+
+    private bool playerInside = false;
+    private bool used = false;
 
     void Awake()
     {
@@ -20,16 +26,42 @@ public class PickupRestoreMaterial : MonoBehaviour
             targetRenderer = GetComponent<Renderer>();
     }
 
+    void Update()
+    {
+        if (!playerInside || used)
+            return;
+
+        if (Input.GetKeyDown(interactKey))
+        {
+            RestoreMaterial();
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player"))
             return;
 
+        playerInside = true;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        playerInside = false;
+    }
+
+    void RestoreMaterial()
+    {
         if (targetRenderer != null && normalMaterial != null)
         {
-            // 🔥 Volver al material normal
+            // 🔄 Volver al material normal
             targetRenderer.material = normalMaterial;
         }
+
+        used = true;
 
         // Opcional: desactivar collider para que no vuelva a activarse
         if (disableColliderAfterPickup)
