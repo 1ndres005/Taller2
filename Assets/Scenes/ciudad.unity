@@ -29650,6 +29650,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: iNTRUCCIONES
       objectReference: {fileID: 0}
+    - target: {fileID: 8284353422799835755, guid: dac5b27dc40d3a942970ff1df9b495ac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 9149553474986975420, guid: dac5b27dc40d3a942970ff1df9b495ac, type: 3}
