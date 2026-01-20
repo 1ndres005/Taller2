@@ -28,6 +28,10 @@ public class DialogoInicio : MonoBehaviour
     public float shakeIntensidad = 5f;
     public float shakeDuracion = 0.3f;
 
+    // ✅ NUEVO: referencia al dolly para volver la cámara al final
+    [Header("Dolly (volver cámara al terminar)")]
+    public CameraDolly_M_y_VuelveSiObjetoDesaparece cameraDolly;
+
     private int indiceLinea = 0;
     private bool dialogoActivo = false;
     private Coroutine fadeCoroutine;
@@ -90,6 +94,10 @@ public class DialogoInicio : MonoBehaviour
                     if (objetosADesaparecer[i] != null)
                         objetosADesaparecer[i].SetActive(false);
             }
+
+            // ✅ NUEVO: devolver cámara a normal cuando termina el diálogo
+            if (cameraDolly != null)
+                cameraDolly.ForzarVuelta();
         }
         else
         {
