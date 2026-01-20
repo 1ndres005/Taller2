@@ -18,16 +18,21 @@ public class SimpleCameraDollySlider : MonoBehaviour
     public bool cambioAutomatico = false;
 
     [Header("Activación por Slider")]
-    public bool activarPorSlider = false;     // si true, el slider puede activar el movimiento
+    public bool activarPorSlider = false;
     public Slider sliderControl;
-    public float valorSliderObjetivo = 1f;    // cuando llega a este valor, se dispara
+    public float valorSliderObjetivo = 1f;
 
     [Header("Bloquear movimiento de cámara durante el dolly")]
-    public CameraFollowPlayerXZ cameraFollow; // <- script que mueve la cámara siguiendo al jugador
+    public CameraFollowPlayerXZ cameraFollow;
+
+    [Header("Uso único")]
+    public bool usarSoloUnaVez = false;
+
+    [Header("Objetos a desaparecer (uso único)")]
+    public GameObject[] objetosADesaparecer;
 
     bool jugadorCerca = false;
     bool enCinematica = false;
-
     bool camaraArriba = false;
 
     // para que el slider solo dispare una vez
@@ -35,6 +40,12 @@ public class SimpleCameraDollySlider : MonoBehaviour
 
     Vector3 posicionInicial;
     Quaternion rotacionInicial;
+
+    // ✅ NUEVO: la UI se bloquea SOLO después de interactuar (cuando usarSoloUnaVez + activarPorSlider)
+    bool interaccionHecha = false;
+
+    // ✅ NUEVO: si activarPorSlider está activo, E solo una vez
+    bool eYaUsadaConSlider = false;
 
     void Start()
     {
@@ -50,22 +61,28 @@ public class SimpleCameraDollySlider : MonoBehaviour
         // 🔥 ACTIVACIÓN POR SLIDER (si está activada)
         if (activarPorSlider && sliderControl != null && !enCinematica)
         {
-            // Si el slider llegó al objetivo y aún no ha disparado
             if (!sliderDisparado && sliderControl.value >= valorSliderObjetivo)
             {
-                sliderDisparado = true; // marcamos que ya lo usamos
+                sliderDisparado = true;
+
+                // ✅ si está en modo "una vez" + slider, al interactuar bloqueamos la UI para siempre
+                if (usarSoloUnaVez)
+                {
+                    interaccionHecha = true;
+                    DesaparecerObjetosUnaVez();
+                }
+
+                if (uiInteract != null)
+                    uiInteract.SetActive(false);
 
                 if (!camaraArriba)
                     StartCoroutine(MoverCamaraIda());
                 else
                     StartCoroutine(MoverCamaraVuelta());
 
-                // salimos para no mezclar con lo demás este frame
                 return;
             }
 
-            // Si el slider fue reiniciado (por ejemplo lo pones en 0 desde otro script),
-            // lo rearmamos para que pueda volver a disparar.
             if (sliderDisparado && sliderControl.value < valorSliderObjetivo * 0.1f)
             {
                 sliderDisparado = false;
@@ -75,6 +92,24 @@ public class SimpleCameraDollySlider : MonoBehaviour
         // 🔥 MODO MANUAL (tecla E, solo si NO está en automático de trigger)
         if (!cambioAutomatico && jugadorCerca && !enCinematica && Input.GetKeyDown(KeyCode.E))
         {
+            // ✅ Si activarPorSlider está activo, E solo se puede usar una vez
+            if (activarPorSlider && eYaUsadaConSlider)
+                return;
+
+            if (activarPorSlider)
+                eYaUsadaConSlider = true;
+
+            // ✅ si está en modo "una vez" + slider, al interactuar bloqueamos la UI para siempre
+            if (activarPorSlider && usarSoloUnaVez)
+            {
+                interaccionHecha = true;
+                DesaparecerObjetosUnaVez();
+            }
+
+            // ✅ ocultar UI al interactuar
+            if (uiInteract != null)
+                uiInteract.SetActive(false);
+
             if (!camaraArriba)
                 StartCoroutine(MoverCamaraIda());
             else
@@ -89,7 +124,6 @@ public class SimpleCameraDollySlider : MonoBehaviour
     {
         enCinematica = true;
 
-        // 🔒 Bloquear follow de cámara mientras entra al punto/dolly
         if (cameraFollow != null)
             cameraFollow.seguirHabilitado = false;
 
@@ -146,12 +180,15 @@ public class SimpleCameraDollySlider : MonoBehaviour
         camaraArriba = false;
         enCinematica = false;
 
-        // 🔓 Volver a permitir que la cámara siga al jugador
         if (cameraFollow != null)
             cameraFollow.seguirHabilitado = true;
 
+        // ✅ Solo mostrar UI si NO estamos bloqueados por "una vez + slider"
         if (!cambioAutomatico && jugadorCerca && uiInteract != null)
-            uiInteract.SetActive(true);
+        {
+            if (!(activarPorSlider && usarSoloUnaVez && interaccionHecha))
+                uiInteract.SetActive(true);
+        }
     }
 
     // ==========================
@@ -164,7 +201,6 @@ public class SimpleCameraDollySlider : MonoBehaviour
 
         jugadorCerca = true;
 
-        // 🔥 MODO AUTOMÁTICO por trigger
         if (cambioAutomatico && !enCinematica)
         {
             if (!camaraArriba)
@@ -175,7 +211,10 @@ public class SimpleCameraDollySlider : MonoBehaviour
             return;
         }
 
-        // 🔥 MODO MANUAL (solo E)
+        // ✅ Si "una vez + slider" y ya interactuó, NO mostrar nunca más
+        if (activarPorSlider && usarSoloUnaVez && interaccionHecha)
+            return;
+
         if (!enCinematica && uiInteract != null)
             uiInteract.SetActive(true);
     }
@@ -189,5 +228,19 @@ public class SimpleCameraDollySlider : MonoBehaviour
 
         if (!cambioAutomatico && uiInteract != null)
             uiInteract.SetActive(false);
+    }
+
+    // ==========================
+    //  OBJETOS A DESAPARECER
+    // ==========================
+    void DesaparecerObjetosUnaVez()
+    {
+        if (objetosADesaparecer == null) return;
+
+        foreach (GameObject obj in objetosADesaparecer)
+        {
+            if (obj != null)
+                obj.SetActive(false);
+        }
     }
 }
