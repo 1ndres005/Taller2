@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 public class PickupAndDisable : MonoBehaviour
@@ -6,31 +6,85 @@ public class PickupAndDisable : MonoBehaviour
     [Header("UI Counter")]
     public TextMeshProUGUI counterText;
 
-    [Header("Object to Disable")]
-    public GameObject objectToDisable; // El otro objeto que quieres apagar
+    [Header("UI Interacción (Ej: 'Presiona M')")]
+    public GameObject uiInteraccion; // 👈 UI que aparece al entrar al trigger
+
+    [Header("Objects to Disable (Disappear)")]
+    public GameObject[] objectsToDisable;
+
+    [Header("Objects to Enable (Appear)")]
+    public GameObject[] objectsToEnable;
 
     public static int counter = 0;
+
+    private bool playerInside = false;
 
     void Start()
     {
         UpdateUI();
+
+        if (uiInteraccion != null)
+            uiInteraccion.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (playerInside && Input.GetKeyDown(KeyCode.M))
+        {
+            Pickup();
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // Sumar contador
-            counter++;
-            UpdateUI();
+            playerInside = true;
 
-            // Desactivar el objeto elegido
-            if (objectToDisable != null)
-                objectToDisable.SetActive(false);
-
-            // Desaparecer este objeto
-            Destroy(gameObject);
+            // 🟢 Mostrar UI
+            if (uiInteraccion != null)
+                uiInteraccion.SetActive(true);
         }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInside = false;
+
+            // 🔴 Ocultar UI
+            if (uiInteraccion != null)
+                uiInteraccion.SetActive(false);
+        }
+    }
+
+    void Pickup()
+    {
+        // 🔴 Ocultar UI
+        if (uiInteraccion != null)
+            uiInteraccion.SetActive(false);
+
+        // Sumar contador
+        counter++;
+        UpdateUI();
+
+        // Desactivar objetos
+        foreach (GameObject obj in objectsToDisable)
+        {
+            if (obj != null)
+                obj.SetActive(false);
+        }
+
+        // Activar objetos
+        foreach (GameObject obj in objectsToEnable)
+        {
+            if (obj != null)
+                obj.SetActive(true);
+        }
+
+        // Destruir este objeto
+        Destroy(gameObject);
     }
 
     void UpdateUI()

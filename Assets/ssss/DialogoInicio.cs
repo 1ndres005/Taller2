@@ -7,56 +7,46 @@ public class DialogoInicio : MonoBehaviour
     [Header("Referencias UI")]
     public GameObject panelDialogo;
     public TextMeshProUGUI textoDialogo;
-    public Image imagenDialogo;   // La imagen de UI que quieres cambiar
-    private CanvasGroup imagenCanvasGroup; // Para el fade
+    public Image imagenDialogo;
+    private CanvasGroup imagenCanvasGroup;
 
     [Header("Objetos a desaparecer al terminar el diálogo")]
-    public GameObject[] objetosADesaparecer; // 👈 arrastra aquí varios objetos
+    public GameObject[] objetosADesaparecer;
 
-    [Header("Contenido del diálogo")]
+    [Header("Contenido del diálogo (editable en Inspector)")]
     [TextArea(3, 6)]
-    private string[] lineas = {
-        "Bienvenido a Lo mero paisa, un rinconcito lleno de tradición y alegría",
-        "Aquí usted será el protagonista de su propia historia, con muchas aventuras por descubrir.",
-        "Nuestro pueblito tiene gente muy trabajadora que siempre necesita una mano amiga.",
-        "Le espera una jornada especial, llena de sabores, música y la calidez de nuestra tierra.",
-        "Por ahora, hay varios caminos que puede tomar, y la decisión es suya.",
-        "Puede ayudar a don Iván en su jardín, preparando una silleta para la próxima feria.",
-        "También puede visitar a Sofía junto al río, que anda cocinando un delicioso sancocho.",
-        "O si prefiere la montaña, Juan está recogiendo café cerca del cementerio y necesita compañía.",
-        "¿Entonces qué dice? ¿Por dónde quiere empezar esta aventura?"
-    };
+    public string[] lineas;
 
     [Header("Imágenes para cada línea")]
-    public Sprite[] imagenes; // Debe tener la misma cantidad de elementos que "lineas"
+    public Sprite[] imagenes;
 
     [Header("Configuración Fade")]
-    public float duracionFade = 0.25f; // duración del fade (en segundos)
+    public float duracionFade = 0.25f;
 
     [Header("Configuración Texto")]
-    public float delayPalabra = 0.25f; // tiempo entre cada palabra
-    public float shakeIntensidad = 5f; // intensidad de vibración
-    public float shakeDuracion = 0.3f; // duración de vibración
+    public float delayPalabra = 0.25f;
+    public float shakeIntensidad = 5f;
+    public float shakeDuracion = 0.3f;
 
     private int indiceLinea = 0;
     private bool dialogoActivo = false;
     private Coroutine fadeCoroutine;
     private Coroutine mostrarTextoCoroutine;
 
-    // ✅ Referencia al PlayerMovement
-    private PlayerMovement playerMovement;
+    // ✅ Tu script real
+    private MovimientoJugador movimientoJugador;
+    private Rigidbody rbPlayer;
 
     void Awake()
     {
-        // Asegurarse de que la imagen tiene un CanvasGroup
         imagenCanvasGroup = imagenDialogo.GetComponent<CanvasGroup>();
         if (imagenCanvasGroup == null)
-        {
             imagenCanvasGroup = imagenDialogo.gameObject.AddComponent<CanvasGroup>();
-        }
 
-        // Buscar automáticamente el PlayerMovement en la escena
-        playerMovement = FindObjectOfType<PlayerMovement>();
+        // Buscar al jugador automáticamente
+        movimientoJugador = FindObjectOfType<MovimientoJugador>();
+        if (movimientoJugador != null)
+            rbPlayer = movimientoJugador.GetComponent<Rigidbody>();
     }
 
     void Start()
@@ -67,18 +57,19 @@ public class DialogoInicio : MonoBehaviour
     void Update()
     {
         if (dialogoActivo && Input.GetKeyDown(KeyCode.E))
-        {
             MostrarSiguienteLinea();
-        }
     }
 
     System.Collections.IEnumerator IniciarDialogoDespuesDeEspera()
     {
         yield return new WaitForSeconds(1f);
+
         panelDialogo.SetActive(true);
         indiceLinea = 0;
-        ActualizarDialogo();
         dialogoActivo = true;
+
+        BloquearMovimiento(true);   // 🔒
+        ActualizarDialogo();
     }
 
     void MostrarSiguienteLinea()
@@ -90,14 +81,14 @@ public class DialogoInicio : MonoBehaviour
             panelDialogo.SetActive(false);
             dialogoActivo = false;
 
-            // ✅ Al terminar el diálogo, desaparecer todos los objetos del array
+            BloquearMovimiento(false); // 🔓
+
+            // Apagar objetos al final
             if (objetosADesaparecer != null)
             {
                 for (int i = 0; i < objetosADesaparecer.Length; i++)
-                {
                     if (objetosADesaparecer[i] != null)
                         objetosADesaparecer[i].SetActive(false);
-                }
             }
         }
         else
@@ -106,15 +97,32 @@ public class DialogoInicio : MonoBehaviour
         }
     }
 
+    void BloquearMovimiento(bool bloquear)
+    {
+        if (movimientoJugador != null)
+            movimientoJugador.SePuedeMover = !bloquear;
+
+        // Por si tenía impulso/resbalado: frena el rigidbody
+        if (rbPlayer != null && bloquear)
+        {
+            rbPlayer.linearVelocity = Vector3.zero;
+            rbPlayer.angularVelocity = Vector3.zero;
+        }
+    }
+
     void ActualizarDialogo()
     {
-        // Detener corutina de texto si estaba corriendo
+        if (lineas == null || lineas.Length == 0)
+        {
+            textoDialogo.text = "";
+            return;
+        }
+
         if (mostrarTextoCoroutine != null)
             StopCoroutine(mostrarTextoCoroutine);
 
         mostrarTextoCoroutine = StartCoroutine(MostrarTextoPalabraPorPalabra(lineas[indiceLinea]));
 
-        // Cambiar imagen con fade
         if (imagenes != null && indiceLinea < imagenes.Length && imagenes[indiceLinea] != null)
         {
             if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
@@ -131,11 +139,8 @@ public class DialogoInicio : MonoBehaviour
         {
             textoDialogo.text += palabra + " ";
 
-            // Si la palabra contiene "Bienvenido", aplicar vibración
             if (palabra.Contains("Bienvenido"))
-            {
                 yield return StartCoroutine(ShakeTexto());
-            }
 
             yield return new WaitForSeconds(delayPalabra);
         }
@@ -161,7 +166,6 @@ public class DialogoInicio : MonoBehaviour
 
     System.Collections.IEnumerator FadeImagen(Sprite nuevaImagen)
     {
-        // Fade out
         float t = 0f;
         while (t < duracionFade)
         {
@@ -170,10 +174,8 @@ public class DialogoInicio : MonoBehaviour
             yield return null;
         }
 
-        // Cambiar sprite
         imagenDialogo.sprite = nuevaImagen;
 
-        // Fade in
         t = 0f;
         while (t < duracionFade)
         {

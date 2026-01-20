@@ -27600,13 +27600,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 6125311782038184642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fd16c8daf7040844be46d91528ac761, type: 3}
+  m_Script: {fileID: 11500000, guid: d9c70d2ecf65b6b4eb03e5bdd1f7ea9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panelDialogo: {fileID: 6715011295048825614}
   textoDialogo: {fileID: 5005170400464209936}
   imagenDialogo: {fileID: 3503031416226295135}
-  objetoADesaparecer: {fileID: 1450684786}
+  objetosADesaparecer:
+  - {fileID: 1450684786}
+  lineas:
+  - l
+  - 
+  - lll
+  - llll
+  - lll
+  - llll
+  - llll
+  - lll
+  - lllll
   imagenes:
   - {fileID: 0}
   - {fileID: 0}
