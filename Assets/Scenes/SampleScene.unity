@@ -18650,6 +18650,7 @@ GameObject:
   - component: {fileID: 1265325676}
   - component: {fileID: 1265325681}
   - component: {fileID: 1265325682}
+  - component: {fileID: 1265325683}
   m_Layer: 0
   m_Name: dolly 3
   m_TagString: Untagged
@@ -18816,6 +18817,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objetoAMostrar: {fileID: 1454308413}
   objetoAOcultar: {fileID: 721222007}
+--- !u!114 &1265325683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1265325674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03daedc9431a90d4b9f3fee0d6a6f1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloquearMovimiento: 0
 --- !u!1 &1271640042
 GameObject:
   m_ObjectHideFlags: 0
@@ -19190,8 +19204,8 @@ GameObject:
   - component: {fileID: 1313133422}
   - component: {fileID: 1313133427}
   - component: {fileID: 1313133428}
-  - component: {fileID: 1313133429}
   - component: {fileID: 1313133430}
+  - component: {fileID: 1313133431}
   m_Layer: 0
   m_Name: dolly
   m_TagString: Untagged
@@ -19348,19 +19362,6 @@ MonoBehaviour:
   sliderRoot: {fileID: 1964217586}
   fuegoParticles: {fileID: 2040186105}
   toggleKey: 113
---- !u!114 &1313133429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1313133421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ffb5531e8f66c7479d08c4b61fbcf47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activateKey: 101
 --- !u!114 &1313133430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19375,6 +19376,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objetoAMostrar: {fileID: 19523544}
   objetoAOcultar: {fileID: 996259447}
+--- !u!114 &1313133431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313133421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03daedc9431a90d4b9f3fee0d6a6f1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloquearMovimiento: 0
 --- !u!1 &1316534343
 GameObject:
   m_ObjectHideFlags: 0
