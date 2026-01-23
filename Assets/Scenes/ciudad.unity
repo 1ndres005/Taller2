@@ -15904,8 +15904,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368101554}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.065204605, y: 0.8224226, z: -0.09718985, w: -0.5567079}
-  m_LocalPosition: {x: 9.509487, y: 3.9848242, z: 27.47969}
+  m_LocalRotation: {x: -0.070499144, y: 0.14255008, z: -0.013019968, w: -0.9871879}
+  m_LocalPosition: {x: 5.03743, y: 3.0285902, z: 31.931187}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21013,6 +21013,36 @@ PrefabInstance:
       propertyPath: playerRigidbody
       value: 
       objectReference: {fileID: 924453877}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: lineas.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: imagenes.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[0]'
+      value: Bienvenido a  The Most Paisa Christmas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[3]'
+      value: 'Le espera una jornada especial '
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[4]'
+      value: Por ahora, solo ve y habla con tus vecinos para la  hacer la mejor natilla
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[5]'
+      value: "ve y habla con ellos buenas suerte la fecha de te llevar\xE1 a donde
+        ellos "
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[6]'
+      value: "ve y habla con ellos buenas suerte la fecha de te llevar\xE1 a donde
+        ellos "
+      objectReference: {fileID: 0}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: 'imagenes.Array.data[0]'
       value: 
@@ -28030,8 +28060,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 642392133}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1069479, y: -0.81429386, z: 0.16193934, w: 0.5470497}
-  m_LocalPosition: {x: 33.916115, y: 6.922389, z: 55.14698}
+  m_LocalRotation: {x: -0.09375526, y: 0.78280616, z: -0.12948935, w: -0.6013793}
+  m_LocalPosition: {x: 33.862953, y: 5.4788637, z: 48.699043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36837,6 +36867,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 112047515}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: lineas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[0]'
+      value: Y por ultimo Necesitas   muchas dedicacion ya estas listo ve a la casa
+        y haz la natilla la familia tiene hambre
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[1]'
+      value: Y por ultimo Necesitas   muchas dedicacion ya estas listo ve a la casa
+        y haz la natilla la familia tiene hambre
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: objetosADesaparecer.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -37284,8 +37328,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862146366}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12371265, y: -0.7445113, z: 0.14800575, w: 0.63913405}
-  m_LocalPosition: {x: 29.92054, y: 6.771325, z: 12.223638}
+  m_LocalRotation: {x: -0.15489994, y: 0.2679038, z: -0.048213482, w: -0.9496889}
+  m_LocalPosition: {x: 25.233257, y: 5.9359846, z: 9.861504}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43385,8 +43429,8 @@ Transform:
   m_GameObject: {fileID: 980153284}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.1904522, z: -0, w: 0.9816964}
-  m_LocalPosition: {x: -3.11, y: 0, z: 25.13}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -2.85, y: 0, z: 37.27}
+  m_LocalScale: {x: 1.3748, y: 1.3748, z: 1.3748}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1246830047}
@@ -58023,6 +58067,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 585425977}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: lineas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[0]'
+      value: Hola para hacer una natilla necesitas comprar la mejor marca
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[1]'
+      value: Hola para hacer una natilla necesitas comprar la mejor marca
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: objetosADesaparecer.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -62614,8 +62670,8 @@ Transform:
   m_GameObject: {fileID: 1425177939}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.58, y: -0.01, z: -5.44}
+  m_LocalScale: {x: 1.3818, y: 1.3818, z: 1.3818}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 799628152}
@@ -79386,8 +79442,8 @@ Transform:
   m_GameObject: {fileID: 1852674839}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.1904522, z: -0, w: 0.9816964}
-  m_LocalPosition: {x: 16.17, y: 2.39, z: 11.3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 15.29, y: 2.39, z: 18.02}
+  m_LocalScale: {x: 1.8892742, y: 1.8892742, z: 1.8892742}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 591888831}
@@ -80561,8 +80617,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886534067}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.10767105, y: 0.69414425, z: -0.108295515, w: -0.7034506}
-  m_LocalPosition: {x: 11.45343, y: 3.53617, z: -0.26795006}
+  m_LocalRotation: {x: -0.15065391, y: 0.68108207, z: -0.15206808, w: -0.7002185}
+  m_LocalPosition: {x: 10.703583, y: 3.2827501, z: -5.323991}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -85754,6 +85810,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1907926295}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: lineas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[0]'
+      value: 'necesitas tener  en cuenta que se necesita saber batir '
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[1]'
+      value: 'necesitas tener  en cuenta que se necesita saber batir '
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: objetosADesaparecer.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -87170,6 +87238,18 @@ PrefabInstance:
       propertyPath: cameraDolly
       value: 
       objectReference: {fileID: 2130022170}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: lineas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[0]'
+      value: Tener los mejores los mejores ingredientes
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
+      propertyPath: 'lineas.Array.data[1]'
+      value: Tener los mejores los mejores ingredientes
+      objectReference: {fileID: 0}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: objetosADesaparecer.Array.size
       value: 4
@@ -88606,8 +88686,8 @@ Transform:
   m_GameObject: {fileID: 2080530084}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.1904522, z: -0, w: 0.9816964}
-  m_LocalPosition: {x: 22.47, y: 2.39, z: 53.09}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 23.27, y: 2.39, z: 46.23}
+  m_LocalScale: {x: 2.1715968, y: 2.1715968, z: 2.1715968}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1516586494}
