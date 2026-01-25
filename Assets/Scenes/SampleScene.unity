@@ -29135,14 +29135,14 @@ RectTransform:
   m_GameObject: {fileID: 1894781489742178567}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.68181, y: 0.68181, z: 0.68181}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1484072352073646680}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 442}
+  m_AnchoredPosition: {x: 0, y: 346.54}
   m_SizeDelta: {x: 300, y: 200}
   m_Pivot: {x: 0.5, y: 2}
 --- !u!4 &534510612934541359
@@ -29726,7 +29726,7 @@ RectTransform:
   m_GameObject: {fileID: 6715011295048825614}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3181, y: 1.3181, z: 1.3181}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8957403521041723974}
@@ -29737,7 +29737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 540}
+  m_AnchoredPosition: {x: 0, y: 680}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1511471715119354448
@@ -32870,15 +32870,16 @@ MonoBehaviour:
   objetosADesaparecer:
   - {fileID: 1450684786}
   lineas:
-  - l
-  - 
-  - lll
-  - llll
-  - lll
-  - llll
-  - llll
-  - lll
-  - lllll
+  - "\xA1Ho, ho, ho! Bienvenido a la casa, Silvio."
+  - "Qu\xE9 alegr\xEDa tenerte por aqu\xED esta Navidad\u2026"
+  - "Aprovechando que est\xE1s por ac\xE1 y que esta noche es especial, \xBFqu\xE9
+    tal si preparamos juntos una rica y deliciosa natilla de maizena?"
+  - "Mira bien las instrucciones que te ir\xE1n apareciendo en el lado izquierdo.\nPrimero
+    busca los ingredientes, luego haz la mezcla con cuidado y, cuando todo est\xE9
+    listo, prepara la maizena sin dejar que se queme"
+  - "Aqu\xED cocinamos as\xED: todos ayudan, todos aprenden y todos hacen parte de
+    la tradici\xF3n."
+  - "\xA1Vamos, Silvio! Que esta noche la Navidad se cocina en familia."
   imagenes:
   - {fileID: 0}
   - {fileID: 0}
@@ -32890,7 +32891,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   duracionFade: 0.25
-  delayPalabra: 0.25
+  delayPalabra: 0.1
   shakeIntensidad: 5
   shakeDuracion: 0.3
   cameraDolly: {fileID: 0}
