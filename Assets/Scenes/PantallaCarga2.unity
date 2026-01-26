@@ -670,7 +670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7b26c82f8795d34793e9eeeed8b9a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: ciudad
+  sceneToLoad: ciudadlibre
   delaySeconds: 10
 --- !u!4 &1335137557
 Transform:

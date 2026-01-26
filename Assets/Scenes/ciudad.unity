@@ -37052,7 +37052,7 @@ PrefabInstance:
       objectReference: {fileID: 112047515}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: lineas.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: 'lineas.Array.data[0]'
@@ -58371,7 +58371,7 @@ PrefabInstance:
       objectReference: {fileID: 585425977}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: lineas.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: 'lineas.Array.data[0]'
@@ -86767,7 +86767,7 @@ PrefabInstance:
       objectReference: {fileID: 1907926295}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: lineas.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: 'lineas.Array.data[0]'
@@ -88196,7 +88196,7 @@ PrefabInstance:
       objectReference: {fileID: 2130022170}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: lineas.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3222764087144292220, guid: 970c5dc1e7d67654687e430a1ea5cd86, type: 3}
       propertyPath: 'lineas.Array.data[0]'

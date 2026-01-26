@@ -23,6 +23,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PantallaCarga2.unity
     guid: 35e448bd64b609e4f8c901ac3d36a308
+  - enabled: 1
+    path: Assets/Scenes/ciudadlibre.unity
+    guid: a73b0e3d41cae634989946867981bea7
+  - enabled: 1
+    path: Assets/Scenes/PantallaCargacocinal.unity
+    guid: 39538549d568956458ad90f86a26daf2
+  - enabled: 1
+    path: Assets/Scenes/SampleScene 1.unity
+    guid: 07c10827e2ce06f419cd10514d301aab
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
