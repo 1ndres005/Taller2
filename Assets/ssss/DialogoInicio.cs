@@ -28,16 +28,15 @@ public class DialogoInicio : MonoBehaviour
     public float shakeIntensidad = 5f;
     public float shakeDuracion = 0.3f;
 
-    // ✅ NUEVO: referencia al dolly para volver la cámara al final
     [Header("Dolly (volver cámara al terminar)")]
     public CameraDolly_M_y_VuelveSiObjetoDesaparece cameraDolly;
 
     private int indiceLinea = 0;
     private bool dialogoActivo = false;
+    private bool esperandoInput = false; // ✅ NUEVO
     private Coroutine fadeCoroutine;
     private Coroutine mostrarTextoCoroutine;
 
-    // ✅ Tu script real
     private MovimientoJugador movimientoJugador;
     private Rigidbody rbPlayer;
 
@@ -47,7 +46,6 @@ public class DialogoInicio : MonoBehaviour
         if (imagenCanvasGroup == null)
             imagenCanvasGroup = imagenDialogo.gameObject.AddComponent<CanvasGroup>();
 
-        // Buscar al jugador automáticamente
         movimientoJugador = FindObjectOfType<MovimientoJugador>();
         if (movimientoJugador != null)
             rbPlayer = movimientoJugador.GetComponent<Rigidbody>();
@@ -60,8 +58,18 @@ public class DialogoInicio : MonoBehaviour
 
     void Update()
     {
-        if (dialogoActivo && Input.GetKeyDown(KeyCode.E))
-            MostrarSiguienteLinea();
+        if (dialogoActivo && Input.GetKeyDown(KeyCode.E) && !esperandoInput)
+        {
+            StartCoroutine(DelayAntesDeSiguienteLinea()); // ✅ NUEVO
+        }
+    }
+
+    System.Collections.IEnumerator DelayAntesDeSiguienteLinea()
+    {
+        esperandoInput = true;
+        yield return new WaitForSeconds(2f); // ⏱️ DELAY DE 2 SEGUNDOS
+        MostrarSiguienteLinea();
+        esperandoInput = false;
     }
 
     System.Collections.IEnumerator IniciarDialogoDespuesDeEspera()
@@ -72,7 +80,7 @@ public class DialogoInicio : MonoBehaviour
         indiceLinea = 0;
         dialogoActivo = true;
 
-        BloquearMovimiento(true);   // 🔒
+        BloquearMovimiento(true);
         ActualizarDialogo();
     }
 
@@ -85,9 +93,8 @@ public class DialogoInicio : MonoBehaviour
             panelDialogo.SetActive(false);
             dialogoActivo = false;
 
-            BloquearMovimiento(false); // 🔓
+            BloquearMovimiento(false);
 
-            // Apagar objetos al final
             if (objetosADesaparecer != null)
             {
                 for (int i = 0; i < objetosADesaparecer.Length; i++)
@@ -95,7 +102,6 @@ public class DialogoInicio : MonoBehaviour
                         objetosADesaparecer[i].SetActive(false);
             }
 
-            // ✅ NUEVO: devolver cámara a normal cuando termina el diálogo
             if (cameraDolly != null)
                 cameraDolly.ForzarVuelta();
         }
@@ -110,7 +116,6 @@ public class DialogoInicio : MonoBehaviour
         if (movimientoJugador != null)
             movimientoJugador.SePuedeMover = !bloquear;
 
-        // Por si tenía impulso/resbalado: frena el rigidbody
         if (rbPlayer != null && bloquear)
         {
             rbPlayer.linearVelocity = Vector3.zero;
